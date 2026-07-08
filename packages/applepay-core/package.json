@@ -33,6 +33,15 @@
     "LICENSE"
   ],
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e2m-store/cielo-applepay-headless-vtex.git",
+    "directory": "packages/applepay-core"
+  },
+  "homepage": "https://github.com/e2m-store/cielo-applepay-headless-vtex/tree/main/packages/applepay-core#readme",
+  "bugs": {
+    "url": "https://github.com/e2m-store/cielo-applepay-headless-vtex/issues"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean"
   },

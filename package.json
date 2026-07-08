@@ -19,6 +19,10 @@
   ],
   "author": "Cielo",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/e2m-store/cielo-applepay-headless-vtex.git"
+  },
   "devDependencies": {
     "tsup": "^8.3.5",
     "typescript": "^6.0.3"

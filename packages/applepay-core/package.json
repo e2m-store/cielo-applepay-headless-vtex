@@ -1,0 +1,42 @@
+{
+  "name": "@cielo/applepay-headless-vtex",
+  "version": "0.1.0",
+  "description": "Framework-agnostic Apple Pay orchestration core for headless commerce integrations (payment-connector agnostic).",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "apple-pay",
+    "cielo",
+    "payments",
+    "headless-commerce",
+    "vtex"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

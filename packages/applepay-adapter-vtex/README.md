@@ -5,8 +5,21 @@ Integração pronta de **Apple Pay** para checkouts headless construídos sobre 
 ## Instalação
 
 ```bash
-yarn add @cielo/applepay-headless-vtex-adapter @cielo/applepay-headless-vtex
+npm install "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-adapter-vtex" "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
 ```
+
+Ou via `package.json`:
+
+```json
+{
+  "dependencies": {
+    "@cielo/applepay-headless-vtex-adapter": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-adapter-vtex",
+    "@cielo/applepay-headless-vtex": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
+  }
+}
+```
+
+> Requer **npm 7+** ou **Yarn 1.x**. O repositório deve ser público ou o cliente deve ter acesso de leitura.
 
 ## Requisitos
 

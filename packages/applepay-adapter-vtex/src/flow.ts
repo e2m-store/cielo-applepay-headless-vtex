@@ -206,8 +206,13 @@ export function CieloApplePaySetup() {
             const sessionResponse = await openSession(preparedPayload)
 
             const fullPayload = JSON.parse(sessionResponse.Response) as AppPayload
-            preparedPayload.Amount = fullPayload.Amount
-            ctx.fullPayload = { ...preparedPayload, AppleSessionResponse: fullPayload.AppleSessionResponse }
+            const mergedPayload: AppPayload = {
+              ...preparedPayload,
+              ...fullPayload,
+              BearerToken: fullPayload.BearerToken ?? preparedPayload.BearerToken,
+              AppleSessionResponse: fullPayload.AppleSessionResponse,
+            }
+            ctx.fullPayload = mergedPayload
 
             session.completeMerchantValidation(fullPayload.AppleSessionResponse)
           } catch (error) {

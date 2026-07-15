@@ -114,7 +114,7 @@ function useApplePaySdk({
       setSdkError(errorMessage);
     };
     document.head.appendChild(script);
-  }, [sdkReady, scriptId, sdkUrl, getIsReady, errorMessage]);
+  }, [sdkReady, scriptId, sdkUrl, getIsReady, errorMessage, setSdkReady, setSdkError]);
   return {
     sdkReady,
     sdkError
@@ -175,54 +175,7 @@ function ApplePayButton({
 // src/ApplePayModal.tsx
 var import_react3 = require("react");
 var import_applepay_headless_vtex2 = require("@cielo/applepay-headless-vtex");
-
-// ../applepay-adapter-vtex/src/index.ts
-async function postCielo(path, body, apiUrl, merchantId) {
-  const url = `${apiUrl}${path}`;
-  const response = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-VTEX-API-AppKey": merchantId ?? ""
-    },
-    body: JSON.stringify(body)
-  });
-  const text = await response.text();
-  if (!response.ok) {
-    throw new Error(
-      `Falha na requisicao Apple Pay ao connector Cielo (${url}) - HTTP ${response.status}: ${text || "(sem corpo)"}`
-    );
-  }
-  try {
-    return JSON.parse(text);
-  } catch {
-    return text;
-  }
-}
-async function requestApplePayComplete(appPayload, walletRequest) {
-  return postCielo(
-    "/wallet/applepaycomplete",
-    {
-      PaymentId: walletRequest.PaymentId,
-      WalletKey: walletRequest.WalletKey,
-      EphemeralPublicKey: walletRequest.EphemeralPublicKey
-    },
-    appPayload.ApiUrl,
-    appPayload.MerchantId
-  );
-}
-async function requestApplePayCancel(appPayload, cancelRequest) {
-  await postCielo(
-    "/wallet/applepaycancel",
-    {
-      PaymentId: cancelRequest.PaymentId
-    },
-    appPayload.ApiUrl,
-    appPayload.MerchantId
-  );
-}
-
-// src/ApplePayModal.tsx
+var import_applepay_headless_vtex_adapter = require("@cielo/applepay-headless-vtex-adapter");
 var import_jsx_runtime2 = require("react/jsx-runtime");
 function ApplePayModal({
   sessionState,
@@ -262,7 +215,7 @@ function ApplePayModal({
         }
         try {
           const walletRequest = (0, import_applepay_headless_vtex2.getApplePayCompleteRequest)(appPayload, event);
-          await requestApplePayComplete(appPayload, walletRequest);
+          await (0, import_applepay_headless_vtex_adapter.requestApplePayComplete)(appPayload, walletRequest);
           session.completePaymentSuccess();
           onSuccess(orderGroup);
         } catch (err) {
@@ -274,7 +227,7 @@ function ApplePayModal({
       },
       onCancel: async () => {
         const cancelRequest = (0, import_applepay_headless_vtex2.getApplePayCancelRequest)(appPayload);
-        await requestApplePayCancel(appPayload, cancelRequest).catch(() => {
+        await (0, import_applepay_headless_vtex_adapter.requestApplePayCancel)(appPayload, cancelRequest).catch(() => {
         });
         setLoading(false);
         onCancel();

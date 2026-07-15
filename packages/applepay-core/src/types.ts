@@ -62,6 +62,7 @@ export type AppPayload = {
   MerchantId: string
   ApiUrl: string
   PaymentId: string
+  BearerToken?: string
   CertificateName?: string
   OriginRequestId?: string
   MerchantUrl?: string

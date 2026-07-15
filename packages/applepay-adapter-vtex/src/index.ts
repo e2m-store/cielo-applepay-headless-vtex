@@ -2,8 +2,6 @@ import type {
   ApplePayConnector,
   TransactionGateway,
   TransactionPrepared,
-} from '@cielo/applepay-headless-vtex'
-import type {
   AppPayload,
   ApplePayCancelRequest,
   ApplePayCompleteRequest,
@@ -43,7 +41,8 @@ export async function postCielo<T>(
   path: string,
   body: unknown,
   apiUrl: string,
-  merchantId?: string
+  merchantId?: string,
+  bearerToken?: string
 ): Promise<T> {
   const url = `${apiUrl}${path}`
   const response = await fetch(url, {
@@ -51,6 +50,7 @@ export async function postCielo<T>(
     headers: {
       'Content-Type': 'application/json',
       'X-VTEX-API-AppKey': merchantId ?? '',
+      'Authorization': bearerToken ??'',
     },
     body: JSON.stringify(body),
   })
@@ -74,14 +74,15 @@ export async function requestApplePaySession(
   appPayload: AppPayload
 ): Promise<ApplePaySessionResponse> {
   return postCielo<ApplePaySessionResponse>(
-    '/wallet/applepayopensession',
+    '/wallets/v2/applepayopensession',
     {
       PaymentId: appPayload.PaymentId,
       OriginRequestId: appPayload.OriginRequestId,
       MerchantUrl: appPayload.MerchantUrl,
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   )
 }
 
@@ -90,14 +91,15 @@ export async function requestApplePayComplete(
   walletRequest: ApplePayCompleteRequest
 ): Promise<ApplePaySessionResponse> {
   return postCielo<ApplePaySessionResponse>(
-    '/wallet/applepaycomplete',
+    '/wallets/v2/applepaycomplete',
     {
       PaymentId: walletRequest.PaymentId,
       WalletKey: walletRequest.WalletKey,
       EphemeralPublicKey: walletRequest.EphemeralPublicKey,
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   )
 }
 
@@ -106,12 +108,13 @@ export async function requestApplePayCancel(
   cancelRequest: ApplePayCancelRequest
 ): Promise<void> {
   await postCielo<void>(
-    '/wallet/applepaycancel',
+    '/wallets/v2/applepaycancel',
     {
       PaymentId: cancelRequest.PaymentId,
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   )
 }
 

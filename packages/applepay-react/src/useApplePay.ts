@@ -4,8 +4,9 @@ import type {
   ApplePayClient,
   ApplePayConnector,
   TransactionGateway,
+  AppPayload,
+  ApplePayRequestConfig,
 } from '@cielo/applepay-headless-vtex'
-import type { AppPayload, ApplePayRequestConfig } from '@cielo/applepay-headless-vtex'
 
 export type UseApplePayParams = {
   transactions: TransactionGateway

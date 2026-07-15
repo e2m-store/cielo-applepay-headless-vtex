@@ -1,6 +1,6 @@
 {
   "name": "cielo-applepay-headless-vtex",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Apple Pay headless orchestration packages for VTEX + Cielo eWallet checkouts",
   "packageManager": "yarn@1.22.19",
   "private": true,

@@ -56,7 +56,7 @@ type VtexConnectorDeps = {
     cancel: (appPayload: AppPayload, request: ApplePayCancelRequest) => Promise<void>;
 };
 declare function createVtexApplePayConnector(deps: VtexConnectorDeps): ApplePayConnector;
-declare function postCielo<T>(path: string, body: unknown, apiUrl: string, merchantId?: string): Promise<T>;
+declare function postCielo<T>(path: string, body: unknown, apiUrl: string, merchantId?: string, bearerToken?: string): Promise<T>;
 declare function requestApplePaySession(appPayload: AppPayload): Promise<ApplePaySessionResponse>;
 declare function requestApplePayComplete(appPayload: AppPayload, walletRequest: ApplePayCompleteRequest): Promise<ApplePaySessionResponse>;
 declare function requestApplePayCancel(appPayload: AppPayload, cancelRequest: ApplePayCancelRequest): Promise<void>;

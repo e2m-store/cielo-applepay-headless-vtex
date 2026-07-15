@@ -5,24 +5,10 @@ Hooks e componentes React para orquestrar o fluxo **Apple Pay** em checkouts hea
 ## Instalação
 
 ```bash
-npm install "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-react" "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-adapter-vtex" "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
-```
-
-Ou via `package.json`:
-
-```json
-{
-  "dependencies": {
-    "@cielo/applepay-headless-vtex-react": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-react",
-    "@cielo/applepay-headless-vtex-adapter": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-adapter-vtex",
-    "@cielo/applepay-headless-vtex": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
-  }
-}
+yarn add @cielo/applepay-headless-vtex-react @cielo/applepay-headless-vtex
 ```
 
 Requer `react` `^19.0.0` como peer dependency.
-
-> Requer **npm 7+** ou **Yarn 1.x**. O repositório deve ser público ou o cliente deve ter acesso de leitura.
 
 ## `ApplePayButton`
 

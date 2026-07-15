@@ -15,7 +15,7 @@ import {
 import {
   requestApplePayComplete,
   requestApplePayCancel,
-} from '../../applepay-adapter-vtex/src'
+} from '@cielo/applepay-headless-vtex-adapter'
 import { useApplePaySdk } from './useApplePaySdk'
 
 type ApplePayModalProps = {

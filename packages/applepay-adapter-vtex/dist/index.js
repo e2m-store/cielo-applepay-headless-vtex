@@ -101,8 +101,13 @@ function CieloApplePaySetup() {
             const openSession = clientOpenSession ?? requestApplePaySession;
             const sessionResponse = await openSession(preparedPayload);
             const fullPayload = JSON.parse(sessionResponse.Response);
-            preparedPayload.Amount = fullPayload.Amount;
-            ctx.fullPayload = { ...preparedPayload, AppleSessionResponse: fullPayload.AppleSessionResponse };
+            const mergedPayload = {
+              ...preparedPayload,
+              ...fullPayload,
+              BearerToken: fullPayload.BearerToken ?? preparedPayload.BearerToken,
+              AppleSessionResponse: fullPayload.AppleSessionResponse
+            };
+            ctx.fullPayload = mergedPayload;
             session.completeMerchantValidation(fullPayload.AppleSessionResponse);
           } catch (error) {
             session.completePaymentFailure();
@@ -200,13 +205,14 @@ function createVtexApplePayConnector(deps) {
     cancelPayment: deps.cancel
   };
 }
-async function postCielo(path, body, apiUrl, merchantId) {
+async function postCielo(path, body, apiUrl, merchantId, bearerToken) {
   const url = `${apiUrl}${path}`;
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-VTEX-API-AppKey": merchantId ?? ""
+      "X-VTEX-API-AppKey": merchantId ?? "",
+      "Authorization": bearerToken ?? ""
     },
     body: JSON.stringify(body)
   });
@@ -224,36 +230,39 @@ async function postCielo(path, body, apiUrl, merchantId) {
 }
 async function requestApplePaySession(appPayload) {
   return postCielo(
-    "/wallet/applepayopensession",
+    "/wallets/v2/applepayopensession",
     {
       PaymentId: appPayload.PaymentId,
       OriginRequestId: appPayload.OriginRequestId,
       MerchantUrl: appPayload.MerchantUrl
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   );
 }
 async function requestApplePayComplete(appPayload, walletRequest) {
   return postCielo(
-    "/wallet/applepaycomplete",
+    "/wallets/v2/applepaycomplete",
     {
       PaymentId: walletRequest.PaymentId,
       WalletKey: walletRequest.WalletKey,
       EphemeralPublicKey: walletRequest.EphemeralPublicKey
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   );
 }
 async function requestApplePayCancel(appPayload, cancelRequest) {
   await postCielo(
-    "/wallet/applepaycancel",
+    "/wallets/v2/applepaycancel",
     {
       PaymentId: cancelRequest.PaymentId
     },
     appPayload.ApiUrl,
-    appPayload.MerchantId
+    appPayload.MerchantId,
+    appPayload.BearerToken
   );
 }
 export {

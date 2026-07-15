@@ -53,7 +53,7 @@ export function useApplePaySdk({
     }
 
     document.head.appendChild(script)
-  }, [sdkReady, scriptId, sdkUrl, getIsReady, errorMessage])
+  }, [sdkReady, scriptId, sdkUrl, getIsReady, errorMessage, setSdkReady, setSdkError])
 
   return {
     sdkReady,

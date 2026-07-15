@@ -9,20 +9,8 @@ Use este pacote diretamente apenas se estiver construindo um **adapter customiza
 ## Instalação
 
 ```bash
-npm install "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
+yarn add @cielo/applepay-headless-vtex
 ```
-
-Ou via `package.json`:
-
-```json
-{
-  "dependencies": {
-    "@cielo/applepay-headless-vtex": "github:e2m-store/cielo-applepay-headless-vtex#path:packages/applepay-core"
-  }
-}
-```
-
-> Requer **npm 7+** ou **Yarn 1.x**. O repositório deve ser público ou o cliente deve ter acesso de leitura.
 
 ## Conceitos principais
 

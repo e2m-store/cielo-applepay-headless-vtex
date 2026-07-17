@@ -1,4 +1,4 @@
-import { AppPayload, ApplePaySessionResponse, getApplePayCancelRequest, ApplePayRequestConfig, ApplePayCompleteRequest, ApplePayCancelRequest, TransactionPrepared, ApplePayConnector, TransactionGateway } from '@cielo/applepay-headless-vtex';
+import { AppPayload, ApplePaySessionResponse, getApplePayCancelRequest, ApplePayRequestConfig, ApplePayCompleteRequest, ApplePayCancelRequest, TransactionPrepared, ApplePayConnector, TransactionGateway } from '@conectores_cielo/cielo-applepay-headless-vtex-core';
 
 type PreparedApplePayOrder = {
     orderReference: string;
@@ -22,8 +22,8 @@ type StartVtexApplePayFlowDeps = {
     cancelOrder: (orderId: string) => Promise<boolean>;
     /**
      * Valor total do pedido como string decimal (ex: "99.90").
-     * Necessário para criar a ApplePaySession sincronamente no handler de gesto do usuário,
-     * antes de qualquer operação assíncrona, conforme exigência do iOS Safari.
+     * NecessÃ¡rio para criar a ApplePaySession sincronamente no handler de gesto do usuÃ¡rio,
+     * antes de qualquer operaÃ§Ã£o assÃ­ncrona, conforme exigÃªncia do iOS Safari.
      */
     initialAmount: string;
     onSuccess: (orderReference: string) => void;

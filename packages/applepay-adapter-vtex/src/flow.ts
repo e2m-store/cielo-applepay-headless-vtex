@@ -1,4 +1,4 @@
-import {
+﻿import {
   createBrowserApplePayClient,
   getApplePayBaseRequest,
   getApplePayCancelRequest,
@@ -9,7 +9,7 @@ import {
   type AppPayload,
   type ApplePayPaymentEvent,
   type ApplePayRequestConfig,
-} from '@cielo/applepay-headless-vtex'
+} from '@conectores_cielo/cielo-applepay-headless-vtex-core'
 import {
   requestApplePayCancel,
   requestApplePayComplete,
@@ -45,8 +45,8 @@ export type StartVtexApplePayFlowDeps = {
   cancelOrder: (orderId: string) => Promise<boolean>
   /**
    * Valor total do pedido como string decimal (ex: "99.90").
-   * Necessário para criar a ApplePaySession sincronamente no handler de gesto do usuário,
-   * antes de qualquer operação assíncrona, conforme exigência do iOS Safari.
+   * NecessÃ¡rio para criar a ApplePaySession sincronamente no handler de gesto do usuÃ¡rio,
+   * antes de qualquer operaÃ§Ã£o assÃ­ncrona, conforme exigÃªncia do iOS Safari.
    */
   initialAmount: string
   onSuccess: (orderReference: string) => void
@@ -144,7 +144,7 @@ export function CieloApplePaySetup() {
     const client = createBrowserApplePayClient(3)
 
     if (typeof window !== 'undefined' && window.location.protocol !== 'https:') {
-      deps.onError('Apple Pay requer HTTPS. Acesse a loja por um domínio seguro (https://) para usar este meio de pagamento.')
+      deps.onError('Apple Pay requer HTTPS. Acesse a loja por um domÃ­nio seguro (https://) para usar este meio de pagamento.')
       return
     }
 
@@ -154,12 +154,12 @@ export function CieloApplePaySetup() {
     }
 
     if (strictDeviceValidation && !client.canMakePayments()) {
-      deps.onError('Apple Pay não está disponível neste dispositivo.')
+      deps.onError('Apple Pay nÃ£o estÃ¡ disponÃ­vel neste dispositivo.')
       return
     }
 
-    // Contexto compartilhado entre os callbacks da sessão.
-    // Preenchido de forma assíncrona dentro de onValidateMerchant.
+    // Contexto compartilhado entre os callbacks da sessÃ£o.
+    // Preenchido de forma assÃ­ncrona dentro de onValidateMerchant.
     const ctx: {
       prepared: PreparedApplePayOrder | null
       fullPayload: AppPayload | null
@@ -177,7 +177,7 @@ export function CieloApplePaySetup() {
       const applePayApp = processResult?.apps?.find((app) => /ewallet|applepay|apple.pay/i.test(app.appName))
 
       if (!applePayApp?.appPayload) {
-        throw new Error('Connector Cielo não retornou paymentAppData para Apple Pay. Verifique a configuração do connector.')
+        throw new Error('Connector Cielo nÃ£o retornou paymentAppData para Apple Pay. Verifique a configuraÃ§Ã£o do connector.')
       }
 
       const parsedPayload = JSON.parse(applePayApp.appPayload) as AppPayload
@@ -186,7 +186,7 @@ export function CieloApplePaySetup() {
       return parsedPayload
     }
 
-    // Dispara o preparo do pedido imediatamente, sem bloquear a criação da sessão.
+    // Dispara o preparo do pedido imediatamente, sem bloquear a criaÃ§Ã£o da sessÃ£o.
     const preparedPayloadPromise = prepareVtexOrderBeforeOpenSession()
 
     const request = getApplePayBaseRequest(
@@ -194,8 +194,8 @@ export function CieloApplePaySetup() {
       ClientRequestConfig
     )
 
-    // Cria a ApplePaySession de forma síncrona no clique (exigência do iOS Safari
-    // para o construtor de ApplePaySession), mas só exibe a wallet ao usuário
+    // Cria a ApplePaySession de forma sÃ­ncrona no clique (exigÃªncia do iOS Safari
+    // para o construtor de ApplePaySession), mas sÃ³ exibe a wallet ao usuÃ¡rio
     // (session.begin()) depois que o pedido tiver sido criado na VTEX.
     try {
       const session = client.createSession(request, {
@@ -228,14 +228,14 @@ export function CieloApplePaySetup() {
 
           if (!prepared || !fullPayload) {
             session.completePaymentFailure()
-            deps.onError('Estado do fluxo Apple Pay inválido.')
+            deps.onError('Estado do fluxo Apple Pay invÃ¡lido.')
             return
           }
 
           const errors: unknown[] = []
 
           if (!isBillingContactValid(event.payment.billingContact)) {
-            errors.push({ code: 'billingContactInvalid', contactField: 'postalCode', message: 'Endereço de cobrança incompleto.' })
+            errors.push({ code: 'billingContactInvalid', contactField: 'postalCode', message: 'EndereÃ§o de cobranÃ§a incompleto.' })
             session.completePaymentFailure(errors)
             await cancelPreparedOrder(prepared, deps.cancelOrder, deps.onError)
             return
@@ -254,7 +254,7 @@ export function CieloApplePaySetup() {
 
             if (!approved) {
               session.completePaymentFailure()
-              deps.onError('Pagamento Apple Pay não autorizado pelo emissor.')
+              deps.onError('Pagamento Apple Pay nÃ£o autorizado pelo emissor.')
               await cancelPreparedOrder(prepared, deps.cancelOrder, deps.onError)
               return
             }
@@ -262,7 +262,7 @@ export function CieloApplePaySetup() {
             try {
               await deps.processPlacedOrder(prepared.orderReference)
             } catch {
-              // Callback de confirmação pode falhar sem bloquear o status final para o usuário.
+              // Callback de confirmaÃ§Ã£o pode falhar sem bloquear o status final para o usuÃ¡rio.
             }
 
             session.completePaymentSuccess()
@@ -282,17 +282,17 @@ export function CieloApplePaySetup() {
           await cancelPayment(fullPayload, cancelRequest).catch(() => {
           })
 
-          // onError é no-op: o dismiss é uma ação voluntária do usuário; falha de
-          // rollback no OMS não deve gerar toast de erro - o VTEX cancela
-          // automaticamente por timeout de pagamento caso o cancel não persista.
+          // onError Ã© no-op: o dismiss Ã© uma aÃ§Ã£o voluntÃ¡ria do usuÃ¡rio; falha de
+          // rollback no OMS nÃ£o deve gerar toast de erro - o VTEX cancela
+          // automaticamente por timeout de pagamento caso o cancel nÃ£o persista.
           await cancelPreparedOrder(prepared, deps.cancelOrder, () => {
           })
         },
       })
 
-      // A wallet só é apresentada ao usuário depois que o pedido for criado na
-      // VTEX (preparedPayloadPromise resolvida). Se a criação do pedido falhar,
-      // a sessão nunca é iniciada e nenhum modal chega a aparecer.
+      // A wallet sÃ³ Ã© apresentada ao usuÃ¡rio depois que o pedido for criado na
+      // VTEX (preparedPayloadPromise resolvida). Se a criaÃ§Ã£o do pedido falhar,
+      // a sessÃ£o nunca Ã© iniciada e nenhum modal chega a aparecer.
       preparedPayloadPromise
         .then(() => {
           session.begin()
@@ -318,3 +318,6 @@ const defaultSetup = CieloApplePaySetup()
 
 export const Init = defaultSetup.Init
 export const startVtexApplePayFlow = defaultSetup.startVtexApplePayFlow
+
+
+

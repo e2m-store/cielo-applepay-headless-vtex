@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   ApplePayConnector,
   TransactionGateway,
   TransactionPrepared,
@@ -6,7 +6,7 @@ import type {
   ApplePayCancelRequest,
   ApplePayCompleteRequest,
   ApplePaySessionResponse,
-} from '@cielo/applepay-headless-vtex'
+} from '@conectores_cielo/cielo-applepay-headless-vtex-core'
 
 export type VtexTransactionsDeps = {
   prepare: () => Promise<TransactionPrepared>
@@ -119,3 +119,6 @@ export async function requestApplePayCancel(
 }
 
 export * from './flow'
+
+
+

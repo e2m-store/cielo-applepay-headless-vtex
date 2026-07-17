@@ -1,6 +1,6 @@
 // src/useApplePay.ts
 import { useCallback, useMemo, useState } from "react";
-import { createApplePayOrchestrator } from "@cielo/applepay-headless-vtex";
+import { createApplePayOrchestrator } from "@conectores_cielo/cielo-applepay-headless-vtex-core";
 function useApplePay(params) {
   const { transactions, connector, client, onSuccess, onError, onCancel } = params;
   const [loading, setLoading] = useState(false);
@@ -152,11 +152,11 @@ import {
   getApplePayCompleteRequest,
   isBillingContactValid,
   isShippingContactValid
-} from "@cielo/applepay-headless-vtex";
+} from "@conectores_cielo/cielo-applepay-headless-vtex-core";
 import {
   requestApplePayComplete,
   requestApplePayCancel
-} from "@cielo/applepay-headless-vtex-adapter";
+} from "@conectores_cielo/cielo-applepay-headless-vtex-adapter";
 import { jsx as jsx2, jsxs } from "react/jsx-runtime";
 function ApplePayModal({
   sessionState,

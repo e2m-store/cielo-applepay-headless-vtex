@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import {
@@ -11,11 +11,11 @@ import {
   type ApplePayPaymentEvent,
   type ApplePayRequestConfig,
   type ApplePaySessionState,
-} from '@cielo/applepay-headless-vtex'
+} from '@conectores_cielo/cielo-applepay-headless-vtex-core'
 import {
   requestApplePayComplete,
   requestApplePayCancel,
-} from '@cielo/applepay-headless-vtex-adapter'
+} from '@conectores_cielo/cielo-applepay-headless-vtex-adapter'
 import { useApplePaySdk } from './useApplePaySdk'
 
 type ApplePayModalProps = {
@@ -175,3 +175,6 @@ export function ApplePayModal({
     </div>
   )
 }
+
+
+

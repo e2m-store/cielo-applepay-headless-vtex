@@ -1,5 +1,5 @@
-{
-  "name": "@cielo/applepay-headless-vtex",
+﻿{
+  "name": "@conectores_cielo/cielo-applepay-headless-vtex-core",
   "version": "0.1.1",
   "description": "Framework-agnostic Apple Pay orchestration core for headless commerce integrations (payment-connector agnostic).",
   "private": false,
@@ -34,9 +34,12 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean"
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean",
+    "prepack": "npm run build"
   },
   "publishConfig": {
     "access": "public"
   }
 }
+
+

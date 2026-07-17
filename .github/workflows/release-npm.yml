@@ -1,0 +1,121 @@
+﻿name: Release Packages to npm
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+concurrency:
+  group: release-npm
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build all packages
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test
+
+      - name: Validate NPM_TOKEN secret
+        run: |
+          if [ -z "${NODE_AUTH_TOKEN}" ]; then
+            echo "NPM_TOKEN secret is not configured. Configure it in repository secrets before running release."
+            exit 1
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify npm authentication
+        run: npm whoami
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check if core version already exists
+        id: core_check
+        run: |
+          PACKAGE_NAME=$(node -p "require('./packages/applepay-core/package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./packages/applepay-core/package.json').version")
+
+          if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping publish for ${PACKAGE_NAME}@${PACKAGE_VERSION} (already published)."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Publishing ${PACKAGE_NAME}@${PACKAGE_VERSION}."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish core package
+        if: steps.core_check.outputs.exists != 'true'
+        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-core npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check if adapter version already exists
+        id: adapter_check
+        run: |
+          PACKAGE_NAME=$(node -p "require('./packages/applepay-adapter-vtex/package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./packages/applepay-adapter-vtex/package.json').version")
+
+          if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping publish for ${PACKAGE_NAME}@${PACKAGE_VERSION} (already published)."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Publishing ${PACKAGE_NAME}@${PACKAGE_VERSION}."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish adapter package
+        if: steps.adapter_check.outputs.exists != 'true'
+        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-adapter npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Check if react version already exists
+        id: react_check
+        run: |
+          PACKAGE_NAME=$(node -p "require('./packages/applepay-react/package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./packages/applepay-react/package.json').version")
+
+          if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Skipping publish for ${PACKAGE_NAME}@${PACKAGE_VERSION} (already published)."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Publishing ${PACKAGE_NAME}@${PACKAGE_VERSION}."
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish react package
+        if: steps.react_check.outputs.exists != 'true'
+        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-react npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+
+

@@ -1,5 +1,5 @@
-{
-  "name": "@cielo/applepay-headless-vtex-react",
+﻿{
+  "name": "@conectores_cielo/cielo-applepay-headless-vtex-react",
   "version": "0.1.1",
   "description": "React hooks and components for Apple Pay headless orchestration (button, modal, session lifecycle).",
   "private": false,
@@ -34,11 +34,12 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean --external react"
+    "build": "tsup src/index.ts --format esm,cjs --dts --sourcemap --clean --external react",
+    "prepack": "npm run build"
   },
   "dependencies": {
-    "@cielo/applepay-headless-vtex": "^0.1.0",
-    "@cielo/applepay-headless-vtex-adapter": "^0.1.0"
+    "@conectores_cielo/cielo-applepay-headless-vtex-core": "^0.1.1",
+    "@conectores_cielo/cielo-applepay-headless-vtex-adapter": "^0.1.1"
   },
   "peerDependencies": {
     "react": "^19.0.0"
@@ -51,3 +52,6 @@
     "access": "public"
   }
 }
+
+
+

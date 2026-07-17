@@ -1,12 +1,12 @@
-import { useCallback, useMemo, useState } from 'react'
-import { createApplePayOrchestrator } from '@cielo/applepay-headless-vtex'
+﻿import { useCallback, useMemo, useState } from 'react'
+import { createApplePayOrchestrator } from '@conectores_cielo/cielo-applepay-headless-vtex-core'
 import type {
   ApplePayClient,
   ApplePayConnector,
   TransactionGateway,
   AppPayload,
   ApplePayRequestConfig,
-} from '@cielo/applepay-headless-vtex'
+} from '@conectores_cielo/cielo-applepay-headless-vtex-core'
 
 export type UseApplePayParams = {
   transactions: TransactionGateway
@@ -69,3 +69,6 @@ export function useApplePay(params: UseApplePayParams) {
     error,
   }
 }
+
+
+

@@ -1,4 +1,4 @@
-import { TransactionGateway, ApplePayConnector, ApplePayClient, AppPayload, ApplePayRequestConfig, ApplePaySessionState } from '@cielo/applepay-headless-vtex';
+import { TransactionGateway, ApplePayConnector, ApplePayClient, AppPayload, ApplePayRequestConfig, ApplePaySessionState } from '@conectores_cielo/cielo-applepay-headless-vtex-core';
 import * as react from 'react';
 import { ButtonHTMLAttributes } from 'react';
 

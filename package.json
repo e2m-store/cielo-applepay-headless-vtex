@@ -1,6 +1,6 @@
 {
-  "name": "cielo-applepay-headless-vtex",
-  "version": "1.0.1",
+  "name": "@conectores_cielo/cielo-applepay-headless-vtex",
+  "version": "1.0.0",
   "description": "Apple Pay headless orchestration packages for VTEX + Cielo eWallet checkouts",
   "packageManager": "yarn@1.22.19",
   "private": true,
@@ -8,7 +8,10 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "yarn workspace @cielo/applepay-headless-vtex build && yarn workspace @cielo/applepay-headless-vtex-adapter build && yarn workspace @cielo/applepay-headless-vtex-react build"
+    "build": "yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-core build && yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-adapter build && yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-react build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage.enabled true --coverage.provider v8 --coverage.reporter=text --coverage.reporter=lcov --coverage.reporter=json-summary"
   },
   "keywords": [
     "apple-pay",
@@ -24,7 +27,9 @@
     "url": "git+https://github.com/e2m-store/cielo-applepay-headless-vtex.git"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.8",
     "tsup": "^8.3.5",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^2.1.8"
   }
 }

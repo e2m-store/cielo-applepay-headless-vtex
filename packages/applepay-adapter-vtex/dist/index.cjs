@@ -33,7 +33,7 @@ __export(index_exports, {
 module.exports = __toCommonJS(index_exports);
 
 // src/flow.ts
-var import_applepay_headless_vtex = require("@cielo/applepay-headless-vtex");
+var import_cielo_applepay_headless_vtex_core = require("@conectores_cielo/cielo-applepay-headless-vtex-core");
 var DEFAULT_APPLE_PAY_REQUEST_CONFIG = {
   countryCode: "BR",
   currencyCode: "BRL",
@@ -89,9 +89,9 @@ function CieloApplePaySetup() {
       return "Nao foi possivel iniciar a sessao do Apple Pay.";
     };
     const isBrowserApplePayAvailable = typeof window !== "undefined" && typeof window.ApplePaySession !== "undefined";
-    const client = (0, import_applepay_headless_vtex.createBrowserApplePayClient)(3);
+    const client = (0, import_cielo_applepay_headless_vtex_core.createBrowserApplePayClient)(3);
     if (typeof window !== "undefined" && window.location.protocol !== "https:") {
-      deps.onError("Apple Pay requer HTTPS. Acesse a loja por um dom\xEDnio seguro (https://) para usar este meio de pagamento.");
+      deps.onError("Apple Pay requer HTTPS. Acesse a loja por um dom\xC3\xADnio seguro (https://) para usar este meio de pagamento.");
       return;
     }
     if (!isBrowserApplePayAvailable) {
@@ -99,7 +99,7 @@ function CieloApplePaySetup() {
       return;
     }
     if (strictDeviceValidation && !client.canMakePayments()) {
-      deps.onError("Apple Pay n\xE3o est\xE1 dispon\xEDvel neste dispositivo.");
+      deps.onError("Apple Pay n\xC3\xA3o est\xC3\xA1 dispon\xC3\xADvel neste dispositivo.");
       return;
     }
     const ctx = { prepared: null, fullPayload: null };
@@ -109,14 +109,14 @@ function CieloApplePaySetup() {
       const processResult = await deps.processPlacedOrder(prepared.orderReference);
       const applePayApp = processResult?.apps?.find((app) => /ewallet|applepay|apple.pay/i.test(app.appName));
       if (!applePayApp?.appPayload) {
-        throw new Error("Connector Cielo n\xE3o retornou paymentAppData para Apple Pay. Verifique a configura\xE7\xE3o do connector.");
+        throw new Error("Connector Cielo n\xC3\xA3o retornou paymentAppData para Apple Pay. Verifique a configura\xC3\xA7\xC3\xA3o do connector.");
       }
       const parsedPayload = JSON.parse(applePayApp.appPayload);
       parsedPayload.MerchantUrl = window.location.origin.replace(/^https?:\/\//, "");
       return parsedPayload;
     }
     const preparedPayloadPromise = prepareVtexOrderBeforeOpenSession();
-    const request = (0, import_applepay_headless_vtex.getApplePayBaseRequest)(
+    const request = (0, import_cielo_applepay_headless_vtex_core.getApplePayBaseRequest)(
       { Amount: deps.initialAmount },
       ClientRequestConfig
     );
@@ -148,28 +148,28 @@ function CieloApplePaySetup() {
           const { prepared, fullPayload } = ctx;
           if (!prepared || !fullPayload) {
             session.completePaymentFailure();
-            deps.onError("Estado do fluxo Apple Pay inv\xE1lido.");
+            deps.onError("Estado do fluxo Apple Pay inv\xC3\xA1lido.");
             return;
           }
           const errors = [];
-          if (!(0, import_applepay_headless_vtex.isBillingContactValid)(event.payment.billingContact)) {
-            errors.push({ code: "billingContactInvalid", contactField: "postalCode", message: "Endere\xE7o de cobran\xE7a incompleto." });
+          if (!(0, import_cielo_applepay_headless_vtex_core.isBillingContactValid)(event.payment.billingContact)) {
+            errors.push({ code: "billingContactInvalid", contactField: "postalCode", message: "Endere\xC3\xA7o de cobran\xC3\xA7a incompleto." });
             session.completePaymentFailure(errors);
             await cancelPreparedOrder(prepared, deps.cancelOrder, deps.onError);
             return;
           }
-          if (!(0, import_applepay_headless_vtex.isShippingContactValid)(event.payment.shippingContact)) {
+          if (!(0, import_cielo_applepay_headless_vtex_core.isShippingContactValid)(event.payment.shippingContact)) {
             errors.push({ code: "shippingContactInvalid", contactField: "givenName", message: "Dados de contato incompletos." });
             session.completePaymentFailure(errors);
             await cancelPreparedOrder(prepared, deps.cancelOrder, deps.onError);
             return;
           }
           try {
-            const walletRequest = (0, import_applepay_headless_vtex.getApplePayCompleteRequest)(fullPayload, event);
+            const walletRequest = (0, import_cielo_applepay_headless_vtex_core.getApplePayCompleteRequest)(fullPayload, event);
             const approved = await requestApplePayComplete(fullPayload, walletRequest);
             if (!approved) {
               session.completePaymentFailure();
-              deps.onError("Pagamento Apple Pay n\xE3o autorizado pelo emissor.");
+              deps.onError("Pagamento Apple Pay n\xC3\xA3o autorizado pelo emissor.");
               await cancelPreparedOrder(prepared, deps.cancelOrder, deps.onError);
               return;
             }
@@ -188,7 +188,7 @@ function CieloApplePaySetup() {
         onCancel: async () => {
           const { prepared, fullPayload } = ctx;
           if (!fullPayload || !prepared) return;
-          const cancelRequest = (0, import_applepay_headless_vtex.getApplePayCancelRequest)(fullPayload);
+          const cancelRequest = (0, import_cielo_applepay_headless_vtex_core.getApplePayCancelRequest)(fullPayload);
           const cancelPayment = clientCancel ?? requestApplePayCancel;
           await cancelPayment(fullPayload, cancelRequest).catch(() => {
           });

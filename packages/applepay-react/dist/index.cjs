@@ -29,7 +29,7 @@ module.exports = __toCommonJS(index_exports);
 
 // src/useApplePay.ts
 var import_react = require("react");
-var import_applepay_headless_vtex = require("@cielo/applepay-headless-vtex");
+var import_cielo_applepay_headless_vtex_core = require("@conectores_cielo/cielo-applepay-headless-vtex-core");
 function useApplePay(params) {
   const { transactions, connector, client, onSuccess, onError, onCancel } = params;
   const [loading, setLoading] = (0, import_react.useState)(false);
@@ -40,7 +40,7 @@ function useApplePay(params) {
   );
   const requestConfig = (0, import_react.useMemo)(() => params.requestConfig, [params.requestConfig]);
   const orchestrator = (0, import_react.useMemo)(
-    () => (0, import_applepay_headless_vtex.createApplePayOrchestrator)({
+    () => (0, import_cielo_applepay_headless_vtex_core.createApplePayOrchestrator)({
       transactions,
       connector,
       client,
@@ -174,8 +174,8 @@ function ApplePayButton({
 
 // src/ApplePayModal.tsx
 var import_react3 = require("react");
-var import_applepay_headless_vtex2 = require("@cielo/applepay-headless-vtex");
-var import_applepay_headless_vtex_adapter = require("@cielo/applepay-headless-vtex-adapter");
+var import_cielo_applepay_headless_vtex_core2 = require("@conectores_cielo/cielo-applepay-headless-vtex-core");
+var import_cielo_applepay_headless_vtex_adapter = require("@conectores_cielo/cielo-applepay-headless-vtex-adapter");
 var import_jsx_runtime2 = require("react/jsx-runtime");
 function ApplePayModal({
   sessionState,
@@ -189,33 +189,33 @@ function ApplePayModal({
   const [loading, setLoading] = (0, import_react3.useState)(false);
   const [flowError, setFlowError] = (0, import_react3.useState)(null);
   async function handleApplePayClick() {
-    const client = (0, import_applepay_headless_vtex2.createBrowserApplePayClient)(3);
+    const client = (0, import_cielo_applepay_headless_vtex_core2.createBrowserApplePayClient)(3);
     if (!client.canMakePayments()) {
       setFlowError("Este dispositivo nao suporta Apple Pay. Verifique se ha um cartao cadastrado na sua Carteira.");
       return;
     }
     setFlowError(null);
     setLoading(true);
-    const request = (0, import_applepay_headless_vtex2.getApplePayBaseRequest)(appPayload, requestConfig);
+    const request = (0, import_cielo_applepay_headless_vtex_core2.getApplePayBaseRequest)(appPayload, requestConfig);
     const session = client.createSession(request, {
       onValidateMerchant: async () => {
         session.completeMerchantValidation(appPayload.AppleSessionResponse);
       },
       onPaymentAuthorized: async (event) => {
         const errors = [];
-        if (!(0, import_applepay_headless_vtex2.isBillingContactValid)(event.payment.billingContact)) {
+        if (!(0, import_cielo_applepay_headless_vtex_core2.isBillingContactValid)(event.payment.billingContact)) {
           errors.push({ code: "billingContactInvalid", contactField: "postalCode", message: "Endereco de cobranca incompleto." });
           session.completePaymentFailure(errors);
           return;
         }
-        if (!(0, import_applepay_headless_vtex2.isShippingContactValid)(event.payment.shippingContact)) {
+        if (!(0, import_cielo_applepay_headless_vtex_core2.isShippingContactValid)(event.payment.shippingContact)) {
           errors.push({ code: "shippingContactInvalid", contactField: "givenName", message: "Dados de contato incompletos." });
           session.completePaymentFailure(errors);
           return;
         }
         try {
-          const walletRequest = (0, import_applepay_headless_vtex2.getApplePayCompleteRequest)(appPayload, event);
-          await (0, import_applepay_headless_vtex_adapter.requestApplePayComplete)(appPayload, walletRequest);
+          const walletRequest = (0, import_cielo_applepay_headless_vtex_core2.getApplePayCompleteRequest)(appPayload, event);
+          await (0, import_cielo_applepay_headless_vtex_adapter.requestApplePayComplete)(appPayload, walletRequest);
           session.completePaymentSuccess();
           onSuccess(orderGroup);
         } catch (err) {
@@ -226,8 +226,8 @@ function ApplePayModal({
         }
       },
       onCancel: async () => {
-        const cancelRequest = (0, import_applepay_headless_vtex2.getApplePayCancelRequest)(appPayload);
-        await (0, import_applepay_headless_vtex_adapter.requestApplePayCancel)(appPayload, cancelRequest).catch(() => {
+        const cancelRequest = (0, import_cielo_applepay_headless_vtex_core2.getApplePayCancelRequest)(appPayload);
+        await (0, import_cielo_applepay_headless_vtex_adapter.requestApplePayCancel)(appPayload, cancelRequest).catch(() => {
         });
         setLoading(false);
         onCancel();

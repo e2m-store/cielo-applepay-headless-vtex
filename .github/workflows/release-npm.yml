@@ -68,7 +68,8 @@ jobs:
 
       - name: Publish core package
         if: steps.core_check.outputs.exists != 'true'
-        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-core npm publish --access public
+        run: npm publish --access public
+        working-directory: packages/applepay-core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -90,7 +91,8 @@ jobs:
 
       - name: Publish adapter package
         if: steps.adapter_check.outputs.exists != 'true'
-        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-adapter npm publish --access public
+        run: npm publish --access public
+        working-directory: packages/applepay-adapter-vtex
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -112,7 +114,8 @@ jobs:
 
       - name: Publish react package
         if: steps.react_check.outputs.exists != 'true'
-        run: yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-react npm publish --access public
+        run: npm publish --access public
+        working-directory: packages/applepay-react
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

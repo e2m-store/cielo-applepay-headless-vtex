@@ -9,7 +9,7 @@ Pacotes de orquestracao Apple Pay para checkouts headless integrados a VTEX Chec
 Antes de instalar, certifique-se de que o seu projeto atende aos seguintes requisitos:
 
 - Node.js 18+ e npm 7+ (ou Yarn 1.x)
-- React 19+ como peer dependency
+- React 18.2+ (compativel com React 18 e 19)
 - Site servido em HTTPS (Apple Pay JS nao funciona em HTTP)
 - Dominio verificado no Apple Developer Portal (arquivo apple-developer-merchantid-domain-association publicado na raiz do dominio)
 - Connector braspag.cielo-ewallet-payment-app habilitado na conta VTEX

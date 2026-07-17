@@ -1,6 +1,6 @@
 ﻿{
   "name": "@conectores_cielo/cielo-applepay-headless-vtex-adapter",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "VTEX + Cielo eWallet connector adapter for the Apple Pay headless orchestration core.",
   "private": false,
   "type": "module",
@@ -38,7 +38,7 @@
     "prepack": "npm run build"
   },
   "dependencies": {
-    "@conectores_cielo/cielo-applepay-headless-vtex-core": "^0.1.1"
+    "@conectores_cielo/cielo-applepay-headless-vtex-core": "^0.1.2"
   },
   "publishConfig": {
     "access": "public"

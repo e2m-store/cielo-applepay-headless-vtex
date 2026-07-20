@@ -1,6 +1,6 @@
 ﻿{
   "name": "@conectores_cielo/cielo-applepay-headless-vtex-core",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Framework-agnostic Apple Pay orchestration core for headless commerce integrations (payment-connector agnostic).",
   "private": false,
   "type": "module",

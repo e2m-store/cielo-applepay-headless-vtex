@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Validate package.json encoding (no BOM)
+        run: yarn check:bom
+
       - name: Build all packages
         run: yarn build
 

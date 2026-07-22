@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-core build && yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-adapter build && yarn workspace @conectores_cielo/cielo-applepay-headless-vtex-react build",
+    "check:bom": "node scripts/check-bom.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage.enabled true --coverage.provider v8 --coverage.reporter=text --coverage.reporter=lcov --coverage.reporter=json-summary",
